@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const server = '127.0.0.1:27017';
-const database = 'Test';
+const database = 'inotebook';
 
 const mongoURI =
   "mongodb://localhost:27017/?directConnection=true";
