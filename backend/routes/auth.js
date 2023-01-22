@@ -73,16 +73,18 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
+    let success = false;
     const { email, password } = req.body;
     try {
       let user = await User.findOne({ email });
       if (!user) {
-        return res.status(400).json({ error: "Invalid Credentials" });
+        return res.status(400).json({success, error: "Invalid Credentials" });
       }
 
       const passwordComp = await bcrypt.compare(password, user.password);
       if (!passwordComp) {
-        return res.status(400).json({ error: "Invalid Credentials" });
+        success=false;
+        return res.status(400).json({success, error: "Invalid Credentials" });
       }
 
       const data = {
@@ -95,7 +97,8 @@ router.post(
       // console.log(jwtData);
 
       // res.json(user);
-      res.json(authtoken);
+      success = true;
+      res.json({success, authtoken});
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Internal Server Error");
