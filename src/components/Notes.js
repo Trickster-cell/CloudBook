@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import React, { useEffect, useRef, useState } from "react";
 import { useContext } from "react";
 import noteContext from "../context/Notes/noteContext";
@@ -7,17 +6,18 @@ import NoteItem from "./NoteItem";
 import { useNavigate } from "react-router-dom";
 
 const Notes = (props) => {
-  const { showAlert } = props;
+  // const { showAlert } = props;
   const context = useContext(noteContext);
-  let Navigate = useNavigate;
+  let Navigate = useNavigate();
   const { notes, getAllNotes, editNote } = context;
-  // useEffect(() => {
-  //   if (localStorage.getItem("token")) {
-  //     getAllNotes();
-  //   } else {
-  //     Navigate("/login");
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      getAllNotes();
+    } else {
+      Navigate("/login");
+      props.showAlert("Please Login First", "danger");
+    }
+  }, []);
 
   const ref = useRef(null);
   const refClose = useRef(null);

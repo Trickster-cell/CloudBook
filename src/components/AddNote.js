@@ -2,25 +2,24 @@ import React from "react";
 import { useContext } from "react";
 import noteContext from "../context/Notes/noteContext";
 import { useState } from "react";
-import NoteState from "../context/Notes/NoteState"
+import NoteState from "../context/Notes/NoteState";
 
-const AddNote = () => {
+const AddNote = (props) => {
   const context = useContext(noteContext);
-  const {addNote} = context;
+  const { addNote } = context;
 
-  const [note, setNote] = useState({title:"", description:"", tag:""})
-  
-  
-  const handleClick = (event) => 
-  {
+  const [note, setNote] = useState({ title: "", description: "", tag: "" });
+
+  const handleClick = (event) => {
     event.preventDefault();
     addNote(note.title, note.description, note.tag);
-    setNote({title:"", description:"", tag:""});
-  }
+    setNote({ title: "", description: "", tag: "" });
+    props.showAlert("Added Note Successfully", "success");
+  };
 
   const onChange = (event) => {
-    setNote({...note, [event.target.name]:event.target.value})
-  }
+    setNote({ ...note, [event.target.name]: event.target.value });
+  };
 
   return (
     <div>
@@ -35,9 +34,10 @@ const AddNote = () => {
               type="text"
               className="form-control"
               id="title"
-              name = "title"
+              name="title"
               onChange={onChange}
               value={note.title}
+              minLength = {3} required
             />
           </div>
           <div className="mb-3">
@@ -48,9 +48,10 @@ const AddNote = () => {
               type="text"
               className="form-control"
               id="description"
-              name = "description"
+              name="description"
               onChange={onChange}
               value={note.description}
+              minLength = {5} required
             />
           </div>
           <div className="mb-3">
@@ -61,12 +62,17 @@ const AddNote = () => {
               type="text"
               className="form-control"
               id="tag"
-              name = "tag"
+              name="tag"
               onChange={onChange}
               value={note.tag}
+              minLength = {3} required
             />
           </div>
-          <button type="submit" className="btn btn-primary" onClick={handleClick}>
+          <button
+            type="submit"
+            className="btn btn-primary"
+            onClick={handleClick}
+          >
             Add Note
           </button>
         </form>

@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = (props) => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   let Navigate = useNavigate();
 
@@ -23,11 +23,15 @@ const Login = () => {
     if (json.success) {
       localStorage.setItem("token", json.authtoken);
       Navigate("/");
+      props.showAlert("Logged In Successfully", "success");
     } else {
-      alert("Invalid Credentials");
+      props.showAlert("Invalid Credentials", "danger");
     }
   };
 
+  const handleRegister = () => {
+    Navigate("/signup");
+  };
   const onChange = (event) => {
     setCredentials({ ...credentials, [event.target.name]: event.target.value });
   };
@@ -35,6 +39,7 @@ const Login = () => {
   return (
     <form className="container" onSubmit={handleSubmit}>
       <div className="mb-3">
+        <h1>Login to iNoteBook</h1>
         <label htmlFor="exampleInputEmail1" className="form-label">
           Email address
         </label>
@@ -61,8 +66,12 @@ const Login = () => {
           onChange={onChange}
         />
       </div>
-      <button type="submit" className="btn btn-primary">
+      <button type="submit" className="btn btn-primary my-1">
         Login
+      </button>
+
+      <button type="submit" className="btn my-1" color="blue" onClick={handleRegister}>
+        <u>New User?</u>
       </button>
     </form>
   );
