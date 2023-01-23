@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [credentials, setCredentials] = useState({
@@ -8,29 +9,35 @@ const Signup = () => {
     password: "",
     confirmpassword: "",
   });
-
+  
+  let Navigate = useNavigate();
   const onChange = (event) => {
     setCredentials({ ...credentials, [event.target.name]: event.target.value });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const {name, email, password, confirmpassword} = credentials;
+    const { name, email, password } = credentials;
     const response = await fetch("http://localhost:5000/api/auth/createuser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name:credentials.name,
+        name: credentials.name,
         email: credentials.email,
         password: credentials.password,
       }),
     });
     const json = await response.json();
     console.log(json);
+    if (json.success) {
+      localStorage.setItem("token", json.authtoken);
+      Navigate("/");
+    } else {
+      alert("User with same Email Address already exists");
+    }
   };
-
 
   return (
     <div className="container">
@@ -70,12 +77,14 @@ const Signup = () => {
             id="password"
             onChange={onChange}
             name="password"
+            minLength={5}
+            required
           />
         </div>
 
         <div className="mb-3">
           <label htmlFor="confirmpassword" className="form-label">
-            Password
+            Confirm Password
           </label>
           <input
             type="password"
@@ -84,9 +93,23 @@ const Signup = () => {
             onChange={onChange}
             name="confirmpassword"
           />
+          <div id="emailHelp" class="form-text">
+            {credentials.password === credentials.confirmpassword
+              ? ""
+              : "Passwords don't match"}
+          </div>
         </div>
 
-        <button type="submit" className="btn btn-primary">
+        <button
+          type="submit"
+          disabled={
+            credentials.password === credentials.confirmpassword &&
+            credentials.confirmpassword.length > 0
+              ? ""
+              : "true"
+          }
+          className="btn btn-primary"
+        >
           Submit
         </button>
       </form>

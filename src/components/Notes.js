@@ -4,13 +4,20 @@ import { useContext } from "react";
 import noteContext from "../context/Notes/noteContext";
 import AddNote from "./AddNote";
 import NoteItem from "./NoteItem";
+import { useNavigate } from "react-router-dom";
 
-const Notes = () => {
+const Notes = (props) => {
+  const { showAlert } = props;
   const context = useContext(noteContext);
+  let Navigate = useNavigate;
   const { notes, getAllNotes, editNote } = context;
-  useEffect(() => {
-    getAllNotes();
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem("token")) {
+  //     getAllNotes();
+  //   } else {
+  //     Navigate("/login");
+  //   }
+  // }, []);
 
   const ref = useRef(null);
   const refClose = useRef(null);
@@ -33,9 +40,10 @@ const Notes = () => {
   };
 
   const handleClick = (event) => {
-    console.log("Updating the Note...", note);
+    // console.log("Updating the Note...", note);
     editNote(note.id, note.etitle, note.edescription, note.etag);
     refClose.current.click();
+    props.showAlert("Updated Note Successfully", "success");
   };
 
   const onChange = (event) => {
@@ -44,7 +52,7 @@ const Notes = () => {
 
   return (
     <>
-      <AddNote />
+      <AddNote showAlert={props.showAlert} />
       <button
         type="button"
         className="btn btn-primary my-2 d-none"
@@ -88,7 +96,8 @@ const Notes = () => {
                     name="etitle"
                     value={note.etitle}
                     onChange={onChange}
-                    minLength = {5} required
+                    minLength={5}
+                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -102,7 +111,8 @@ const Notes = () => {
                     name="edescription"
                     value={note.edescription}
                     onChange={onChange}
-                    minLength = {5} required
+                    minLength={5}
+                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -147,7 +157,12 @@ const Notes = () => {
         </div>
         {notes.map((note) => {
           return (
-            <NoteItem key={note._id} updateNote={updateNote} note={note} />
+            <NoteItem
+              key={note._id}
+              updateNote={updateNote}
+              showAlert={props.showAlert}
+              note={note}
+            />
           );
         })}
       </div>
