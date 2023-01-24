@@ -119,14 +119,19 @@ const Notes = (props) => {
                   <label htmlFor="etag" className="form-label">
                     Tag
                   </label>
-                  <input
-                    type="text"
-                    className="form-control"
+                  <select
                     id="etag"
                     name="etag"
-                    value={note.etag}
                     onChange={onChange}
-                  />
+                    className="form-select"
+                    value={note.etag}
+                  >
+                    <option value="Personal">Personal</option>
+                    <option value="Business">Business</option>
+                    <option value="Study">Study</option>
+                    <option value="Reminder">Reminder</option>
+                    <option value="Other">Other</option>
+                  </select>
                 </div>
               </form>
             </div>

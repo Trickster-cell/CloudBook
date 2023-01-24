@@ -1,20 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
-// import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import Alert from "./Alert";
+import noteContext from "../context/Notes/noteContext";
+import { useContext } from "react";
 const NavBar = (props) => {
-  // let location = useLocation();
-  // useEffect(() => {
-  //   console.log(location.pathname);
-  // }, [location]);
-
   let Navigate = useNavigate();
+
   const handleLogout = (event) => {
+    event.preventDefault();
     localStorage.removeItem("token");
     Navigate("/login");
-    props.showAlert("Logged Out Successfully", "success");
+  };
+
+  const getDetails = async (event) => {
+    event.preventDefault();
+    const response = await fetch("http://localhost:5000/api/auth/getuser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   };
 
   return (
@@ -56,7 +62,7 @@ const NavBar = (props) => {
               </Link>
             </li>
           </ul>
-          {!(localStorage.getItem("token")) ? (
+          {!localStorage.getItem("token") ? (
             <form className="d-flex">
               <Link className="btn btn-primary mx-1" to="/login" role="button">
                 Login
@@ -66,9 +72,12 @@ const NavBar = (props) => {
               </Link>
             </form>
           ) : (
-            <button className="btn btn-primary" onClick={handleLogout}>
-              Logout
-            </button>
+            <div>
+              <i className="fa-regular fa-user mx-3"> </i>
+              <button className="btn btn-primary" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
           )}
         </div>
       </div>

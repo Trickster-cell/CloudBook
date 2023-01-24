@@ -2,13 +2,12 @@ import React from "react";
 import { useContext } from "react";
 import noteContext from "../context/Notes/noteContext";
 import { useState } from "react";
-import NoteState from "../context/Notes/NoteState";
 
 const AddNote = (props) => {
   const context = useContext(noteContext);
   const { addNote } = context;
 
-  const [note, setNote] = useState({ title: "", description: "", tag: "" });
+  const [note, setNote] = useState({ title: "", description: "", tag: "Personal" });
 
   const handleClick = (event) => {
     event.preventDefault();
@@ -37,7 +36,8 @@ const AddNote = (props) => {
               name="title"
               onChange={onChange}
               value={note.title}
-              minLength = {3} required
+              minLength={3}
+              required
             />
           </div>
           <div className="mb-3">
@@ -51,22 +51,26 @@ const AddNote = (props) => {
               name="description"
               onChange={onChange}
               value={note.description}
-              minLength = {5} required
+              minLength={5}
+              required
             />
           </div>
           <div className="mb-3">
             <label htmlFor="tag" className="form-label">
               Tag
             </label>
-            <input
-              type="text"
-              className="form-control"
+            <select
               id="tag"
               name="tag"
               onChange={onChange}
-              value={note.tag}
-              minLength = {3} required
-            />
+              className="form-select"
+            >
+              <option value="Personal">Personal</option>
+              <option value="Business">Business</option>
+              <option value="Study">Study</option>
+              <option value="Reminder">Reminder</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
           <button
             type="submit"
