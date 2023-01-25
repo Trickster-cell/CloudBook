@@ -7,7 +7,7 @@ const Home = (props) => {
   let { showAlert } = props;
   return (
     <div>
-      <div className="container my-3">
+      <div className="container">
         <Notes showAlert={showAlert} />
       </div>
     </div>

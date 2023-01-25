@@ -73,7 +73,7 @@ const NavBar = (props) => {
             </form>
           ) : (
             <div>
-              <i className="fa-regular fa-user mx-3"> </i>
+              <i class="fa-solid fa-user" style={{color:"white"}}></i>
               <button className="btn btn-primary" onClick={handleLogout}>
                 Logout
               </button>
