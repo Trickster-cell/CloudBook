@@ -4,8 +4,12 @@ import { useNavigate } from "react-router-dom";
 import Alert from "./Alert";
 import noteContext from "../context/Notes/noteContext";
 import { useContext } from "react";
+import userContext from "../context/User/userContext";
+
+
 const NavBar = (props) => {
   let Navigate = useNavigate();
+  const userdetails = useContext(userContext);
 
   const handleLogout = (event) => {
     event.preventDefault();
@@ -13,21 +17,15 @@ const NavBar = (props) => {
     Navigate("/login");
   };
 
-  const getDetails = async (event) => {
-    event.preventDefault();
-    const response = await fetch("http://localhost:5000/api/auth/getuser", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  };
 
+  // const state = {context};
+
+  // console.log(userdetails.email);
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
-          iNoteBook
+          iNoteBook 
         </Link>
         <button
           className="navbar-toggler"
@@ -73,8 +71,9 @@ const NavBar = (props) => {
             </form>
           ) : (
             <div>
-              <i class="fa-solid fa-user" style={{color:"white"}}></i>
-              <button className="btn btn-primary" onClick={handleLogout}>
+              <i className="fa-solid fa-user mx-2" style={{ color: "white" }}></i>
+              <b className="mx-2" style={{ color: "white", fontSize:"20px" }}>Hello, {userdetails.state2.email}!</b>
+              <button className="btn btn-primary mx-2" onClick={handleLogout}>
                 Logout
               </button>
             </div>

@@ -1,8 +1,12 @@
 import React from "react";
+import { useContext } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import userContext from "../context/User/userContext";
 
 const Login = (props) => {
+  const context = useContext(userContext);
+  // const {update} = context;
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   let Navigate = useNavigate();
 
@@ -22,7 +26,10 @@ const Login = (props) => {
     // console.log(json);
     if (json.success) {
       localStorage.setItem("token", json.authtoken);
+      // console.log(credentials.email);
+      context.getUserDetails();
       Navigate("/");
+      // console.log(context.email);
       props.showAlert("Logged In Successfully", "success");
     } else {
       props.showAlert("Invalid Credentials", "danger");
@@ -39,8 +46,22 @@ const Login = (props) => {
   return (
     <form className="container" onSubmit={handleSubmit}>
       <div className="mb-3">
-        <h1>Login to iNoteBook</h1>
-        <label htmlFor="exampleInputEmail1" className="form-label">
+        <h1
+          style={{
+            WebkitTextStrokeWidth: "1px",
+            WebkitTextStrokeColor: "white",
+          }}
+        >
+          Login to iNoteBook
+        </h1>
+        <label
+          htmlFor="exampleInputEmail1"
+          className="form-label"
+          style={{
+            WebkitTextStrokeWidth: "1px",
+            WebkitTextStrokeColor: "white",
+          }}
+        >
           Email address
         </label>
         <input
@@ -54,7 +75,14 @@ const Login = (props) => {
         />
       </div>
       <div className="mb-3">
-        <label htmlFor="exampleInputPassword1" className="form-label">
+        <label
+          htmlFor="exampleInputPassword1"
+          className="form-label"
+          style={{
+            WebkitTextStrokeWidth: "1px",
+            WebkitTextStrokeColor: "white",
+          }}
+        >
           Password
         </label>
         <input
@@ -66,12 +94,35 @@ const Login = (props) => {
           onChange={onChange}
         />
       </div>
-      <button type="submit" className="btn btn-primary my-1">
+      <button
+        type="submit"
+        className="btn btn-primary my-1"
+        style={{
+          WebkitTextStrokeWidth: "1px",
+          WebkitTextStrokeColor: "white",
+        }}
+      >
         Login
       </button>
 
-      <button type="submit" className="btn my-1" color="blue" onClick={handleRegister}>
-        <u>New User?</u>
+      <button
+        type="submit"
+        className="btn my-1"
+        color="blue"
+        onClick={handleRegister}
+        style={{
+          WebkitTextStrokeWidth: "1px",
+          WebkitTextStrokeColor: "white",
+        }}
+      >
+        <u
+          style={{
+            WebkitTextStrokeWidth: "1px",
+            WebkitTextStrokeColor: "white",
+          }}
+        >
+          New User?
+        </u>
       </button>
     </form>
   );

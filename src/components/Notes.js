@@ -156,7 +156,14 @@ const Notes = (props) => {
         </div>
       </div>
       <div className="row my-3">
-        <h1>Your Notes</h1>
+        <div
+          style={{
+            WebkitTextStrokeWidth: "1px",
+            WebkitTextStrokeColor: "white",
+          }}
+        >
+          <h1>Your Notes</h1>
+        </div>
         <div className="container">
           {notes.length === 0 && "No notes to display"}
         </div>

@@ -1,10 +1,14 @@
 import React from "react";
+import { useContext } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import userContext from "../context/User/userContext";
 
 const Signup = (props) => {
+  const context = useContext(userContext);
   const [credentials, setCredentials] = useState({
-    name: "",
+    first_name: "",
+    last_name: "",
     email: "",
     password: "",
     confirmpassword: "",
@@ -17,14 +21,15 @@ const Signup = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const { name, email, password } = credentials;
+    const { first_name, last_name, email, password } = credentials;
     const response = await fetch("http://localhost:5000/api/auth/createuser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: credentials.name,
+        first_name: credentials.first_name,
+        last_name: credentials.last_name,
         email: credentials.email,
         password: credentials.password,
       }),
@@ -33,6 +38,7 @@ const Signup = (props) => {
     // console.log(json);
     if (json.success) {
       localStorage.setItem("token", json.authtoken);
+      context.getUserDetails();
       Navigate("/");
       props.showAlert("Account Successfully Created", "success");
     } else {
@@ -41,21 +47,42 @@ const Signup = (props) => {
   };
 
   return (
-    <div className="container">
+    <div
+      className="container"
+      style={{
+        WebkitTextStrokeWidth: "0.7px",
+        WebkitTextStrokeColor: "white",
+      }}
+    >
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-        <h1>Signup to iNoteBook</h1>
-          <label htmlFor="name" className="form-label">
-            Name
+          <h1>Signup to iNoteBook</h1>
+          <label htmlFor="first_name" className="form-label">
+            First Name
           </label>
           <input
             type="text"
             className="form-control"
-            id="name"
+            id="first_name"
             onChange={onChange}
-            name="name"
+            name="first_name"
+            minLength={3}
+            required
           />
         </div>
+        <div className="mb-3">
+          <label htmlFor="last_name" className="form-label">
+            Last Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="last_name"
+            onChange={onChange}
+            name="last_name"
+          />
+        </div>
+
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
             Email address
@@ -67,6 +94,7 @@ const Signup = (props) => {
             aria-describedby="emailHelp"
             onChange={onChange}
             name="email"
+            required
           />
         </div>
         <div className="mb-3">

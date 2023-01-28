@@ -14,7 +14,8 @@ const JWT_SECRET = "SabMohMayaHai";
 router.post(
   "/createUser",
   [
-    body("name", "Enter a valid name").isLength({ min: 3 }),
+    body("first_name", "Enter a valid name").isLength({ min: 3 }),
+    body("last_name", "Enter a valid name"),
     body("email", "Enter a valid email").isEmail(),
     body("password", "Password length should be atleast 5").isLength({
       min: 5,
@@ -37,7 +38,8 @@ router.post(
       const salt = await bcrypt.genSalt(10);
       const secPass = await bcrypt.hash(req.body.password, salt);
       user = await User.create({
-        name: req.body.name,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
         password: secPass,
         email: req.body.email,
       });

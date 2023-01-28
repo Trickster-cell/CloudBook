@@ -7,7 +7,11 @@ const AddNote = (props) => {
   const context = useContext(noteContext);
   const { addNote } = context;
 
-  const [note, setNote] = useState({ title: "", description: "", tag: "Personal" });
+  const [note, setNote] = useState({
+    title: "",
+    description: "",
+    tag: "Personal",
+  });
 
   const handleClick = (event) => {
     event.preventDefault();
@@ -22,9 +26,15 @@ const AddNote = (props) => {
 
   return (
     <div>
-      <div className="container">
+      <div
+        className="container"
+        style={{
+          WebkitTextStrokeWidth: "0.7px",
+          WebkitTextStrokeColor: "white",
+        }}
+      >
         <h1>Add Notes</h1>
-        <form>
+        <form onSubmit={handleClick}>
           <div className="mb-3">
             <label htmlFor="title" className="form-label">
               Title
@@ -72,11 +82,7 @@ const AddNote = (props) => {
               <option value="Other">Other</option>
             </select>
           </div>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            onClick={handleClick}
-          >
+          <button type="submit" className="btn btn-primary">
             Add Note
           </button>
         </form>
