@@ -5,10 +5,11 @@ const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
 var fetchuser = require("../middleware/fetchuser");
+
+
 // Create a User
 
 const JWT_SECRET = "SabMohMayaHai";
-
 // Route 1
 
 router.post(
@@ -25,14 +26,14 @@ router.post(
     const errors = validationResult(req);
     let success = false;
     if (!errors.isEmpty()) {
-      return res.status(400).json({success, errors: errors.array() });
+      return res.status(400).json({ success, errors: errors.array() });
     }
     try {
       let user = await User.findOne({ email: req.body.email });
       if (user) {
         return res
           .status(400)
-          .json({success, error: "User with this email already exists" });
+          .json({ success, error: "User with this email already exists" });
       }
 
       const salt = await bcrypt.genSalt(10);
@@ -54,7 +55,7 @@ router.post(
       // console.log(jwtData);
       success = true;
       // res.json(user);
-      res.json({success, authtoken});
+      res.json({ success, authtoken });
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Some Error occured");
@@ -81,13 +82,13 @@ router.post(
     try {
       let user = await User.findOne({ email });
       if (!user) {
-        return res.status(400).json({success, error: "Invalid Credentials" });
+        return res.status(400).json({ success, error: "Invalid Credentials" });
       }
 
       const passwordComp = await bcrypt.compare(password, user.password);
       if (!passwordComp) {
-        success=false;
-        return res.status(400).json({success, error: "Invalid Credentials" });
+        success = false;
+        return res.status(400).json({ success, error: "Invalid Credentials" });
       }
 
       const data = {
@@ -101,7 +102,7 @@ router.post(
 
       // res.json(user);
       success = true;
-      res.json({success, authtoken});
+      res.json({ success, authtoken });
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Internal Server Error");
@@ -110,19 +111,15 @@ router.post(
 );
 
 // Route3: Get logged in User details: POST "/api/auth/getuser"
-router.post(
-  "/getuser",
-  fetchuser,
-  async (req, res) => {
-    try {
-      userId = req.user.id;
-      const user = await User.findById(userId).select("-password");
-      res.send(user) 
-    } catch (error) {
-      console.error(error.message);
-      res.status(500).send("Internal Server Error");
-    }
+router.post("/getuser", fetchuser, async (req, res) => {
+  try {
+    userId = req.user.id;
+    const user = await User.findById(userId).select("-password");
+    res.send(user);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
   }
-);
+});
 
 module.exports = router;

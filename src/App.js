@@ -9,6 +9,8 @@ import Login from "./components/Login";
 import { useState } from "react";
 import UserState from "./context/User/UserState";
 import { useEffect } from "react";
+import Profile from "./components/Profile";
+import ImageState from "./context/ImageHandles/ImageState";
 function App() {
   const [alert, setAlert] = useState(null);
   const showAlert = (message, type) => {
@@ -41,11 +43,11 @@ function App() {
   ];
 
   const [ind, setInd] = useState(0);
-  useEffect(() => {
-    setTimeout(() => {
-      setInd((ind + Math.floor(Math.random() * 100)) % backgrounds.length);
-    }, 10000);
-  });
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setInd((ind + Math.floor(Math.random() * 100)) % backgrounds.length);
+  //   }, 10000);
+  // });
 
   const myStyle = {
     backgroundImage: "url('" + backgrounds[ind] + "')",
@@ -60,6 +62,7 @@ function App() {
   return (
     <>
       <div style={myStyle}>
+      <ImageState>
         <UserState>
           <NoteState>
             <BrowserRouter>
@@ -79,10 +82,15 @@ function App() {
                   path="/signup"
                   element={<Signup showAlert={showAlert} />}
                 ></Route>
+                <Route
+                  path="/profile"
+                  element={<Profile showAlert={showAlert} />}
+                ></Route>
               </Routes>
             </BrowserRouter>
           </NoteState>
         </UserState>
+      </ImageState>
       </div>
     </>
   );

@@ -1,8 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import Alert from "./Alert";
-import noteContext from "../context/Notes/noteContext";
 import { useContext } from "react";
 import userContext from "../context/User/userContext";
 
@@ -14,8 +12,14 @@ const NavBar = (props) => {
   const handleLogout = (event) => {
     event.preventDefault();
     localStorage.removeItem("token");
+    localStorage.clear();
     Navigate("/login");
   };
+
+  const handleProfile = (event) => {
+    event.preventDefault();
+    Navigate("/profile");
+  }
 
 
   // const state = {context};
@@ -71,8 +75,8 @@ const NavBar = (props) => {
             </form>
           ) : (
             <div>
-              <i className="fa-solid fa-user mx-2" style={{ color: "white" }}></i>
-              <b className="mx-2" style={{ color: "white", fontSize:"20px" }}>Hello, {userdetails.state2.email}!</b>
+              <i className="fa-solid fa-user mx-2" onClick={handleProfile} style={{ color: "white" }}></i>
+              <b className="mx-2" style={{ color: "white", fontSize:"20px" }}>Hello, {userdetails.state2.first_name}!</b>
               <button className="btn btn-primary mx-2" onClick={handleLogout}>
                 Logout
               </button>

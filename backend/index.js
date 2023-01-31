@@ -11,6 +11,8 @@ app.use(express.json());
 
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/notes", require("./routes/notes"));
+app.use("/api/image", require("./routes/image"));
+
 
 app.listen(port, () => {
   console.log(`iNoteBook backend listening on port ${port}`);

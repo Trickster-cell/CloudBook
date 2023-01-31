@@ -31,6 +31,7 @@ const AddNote = (props) => {
         style={{
           WebkitTextStrokeWidth: "0.7px",
           WebkitTextStrokeColor: "white",
+          fontWeight: "bolder",
         }}
       >
         <h1>Add Notes</h1>

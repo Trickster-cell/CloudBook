@@ -48,8 +48,9 @@ const Login = (props) => {
       <div className="mb-3">
         <h1
           style={{
-            WebkitTextStrokeWidth: "1px",
+            WebkitTextStrokeWidth: "0.5px",
             WebkitTextStrokeColor: "white",
+            fontWeight: "bolder",
           }}
         >
           Login to iNoteBook
@@ -58,8 +59,9 @@ const Login = (props) => {
           htmlFor="exampleInputEmail1"
           className="form-label"
           style={{
-            WebkitTextStrokeWidth: "1px",
+            WebkitTextStrokeWidth: "0.5px",
             WebkitTextStrokeColor: "white",
+            fontWeight: "bolder",
           }}
         >
           Email address
@@ -79,8 +81,9 @@ const Login = (props) => {
           htmlFor="exampleInputPassword1"
           className="form-label"
           style={{
-            WebkitTextStrokeWidth: "1px",
+            WebkitTextStrokeWidth: "0.5px",
             WebkitTextStrokeColor: "white",
+            fontWeight: "bolder",
           }}
         >
           Password
@@ -98,8 +101,9 @@ const Login = (props) => {
         type="submit"
         className="btn btn-primary my-1"
         style={{
-          WebkitTextStrokeWidth: "1px",
+          WebkitTextStrokeWidth: "0.5px",
           WebkitTextStrokeColor: "white",
+          fontWeight: "bolder",
         }}
       >
         Login
@@ -111,14 +115,16 @@ const Login = (props) => {
         color="blue"
         onClick={handleRegister}
         style={{
-          WebkitTextStrokeWidth: "1px",
+          WebkitTextStrokeWidth: "0.5px",
           WebkitTextStrokeColor: "white",
+          fontWeight: "bolder",
         }}
       >
         <u
           style={{
-            WebkitTextStrokeWidth: "1px",
+            WebkitTextStrokeWidth: "0.5px",
             WebkitTextStrokeColor: "white",
+            fontWeight: "bolder",
           }}
         >
           New User?

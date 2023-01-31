@@ -50,8 +50,9 @@ const Signup = (props) => {
     <div
       className="container"
       style={{
-        WebkitTextStrokeWidth: "0.7px",
+        WebkitTextStrokeWidth: "0.5px",
         WebkitTextStrokeColor: "white",
+        fontWeight: "bolder",
       }}
     >
       <form onSubmit={handleSubmit}>
@@ -107,7 +108,7 @@ const Signup = (props) => {
             id="password"
             onChange={onChange}
             name="password"
-            minLength={5}
+            minLength={8}
             required
           />
         </div>
