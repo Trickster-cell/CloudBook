@@ -3,7 +3,11 @@ const router = express.Router();
 const Notes = require("../models/Notes");
 const fetchuser = require("../middleware/fetchuser");
 const { body, validationResult } = require("express-validator");
-
+const bodyParser = require("body-parser");
+router.use(express.json({ limit: "10mb", extended: true }));
+router.use(
+  express.urlencoded({ limit: "10mb", extended: true, parameterLimit: 50000 })
+);
 // Route 1: Get all notes using: GET "/api/notes/fetchallnotes"
 router.get("/fetchallnotes", fetchuser, async (req, res) => {
   try {

@@ -5,7 +5,9 @@ const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
 var fetchuser = require("../middleware/fetchuser");
-
+const bodyParser = require("body-parser");
+router.use(express.json({limit: "10mb", extended: true}))
+router.use(express.urlencoded({limit: "10mb", extended: true, parameterLimit: 50000}))
 
 // Create a User
 

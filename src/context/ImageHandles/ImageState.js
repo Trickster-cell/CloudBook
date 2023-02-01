@@ -1,9 +1,10 @@
 import imgContext from "./imgContext";
 import { useState } from "react";
+import axios from "axios";
 
 const ImageState = (props) => {
   const host = "http://localhost:5000";
-  const [origImage, setOrigImage] = useState([]);
+  const [origImage, setOrigImage] = useState({ testImage: "" });
 
   const getImage = async () => {
     const response = await fetch(`${host}/api/image/getimg`, {
@@ -14,29 +15,25 @@ const ImageState = (props) => {
     });
     const res = await response.json();
     // console.log("print for res on line 16",res[0].img.data);
-    if (res[0].img.data) {
-      setOrigImage(res[0].img.data);
-      localStorage.setItem("dp", res[0].img.data);
+    if (res[0].testImage) {
+      setOrigImage({ ...origImage, testImage: res[0].testImage });
+      localStorage.setItem("dp", res[0].testImage);
     }
   };
 
-  const uploadImage = async (file) => {
-    const response = await fetch(`${host}/api/image/upload`, {
-      method: "POST",
+  const deleteImage = async (id) => {
+    const response = await fetch(`${host}/api/image/delete/${id}`, {
+      method: "DELETE",
       headers: {
         "auth-token": localStorage.getItem("token"),
       },
-      body: { testImage: file },
     });
-    const imgfin = await response.json();
-    setOrigImage({ testImage: file });
-    console.log(imgfin);
+    const res = await response.json();
+    console.log(res);
   };
 
   return (
-    <imgContext.Provider
-      value={{ origImage, getImage, setOrigImage, uploadImage }}
-    >
+    <imgContext.Provider value={{ origImage, getImage, setOrigImage, deleteImage }}>
       {props.children}
     </imgContext.Provider>
   );

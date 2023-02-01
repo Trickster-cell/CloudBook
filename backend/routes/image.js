@@ -9,6 +9,11 @@ const Image = require("../models/Image");
 const multer = require("multer");
 const fs = require("fs");
 const ImageModel = require("../models/Image");
+const bodyParser = require("body-parser");
+router.use(express.json({ limit: "10mb", extended: true }));
+router.use(
+  express.urlencoded({ limit: "10mb", extended: true, parameterLimit: 50000 })
+);
 
 const Storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -28,72 +33,34 @@ router.post(
   upload.single("testImage"),
   fetchuser,
   async (req, res) => {
+    const body = req.body;
+    body.user = req.user.id;
     try {
-      // const { name, testImage } = req.body;
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      }
-      const saveImage = new ImageModel({
-        name: req.body.name,
-        img: {
-          data: fs.readFileSync("uploads/" + req.file.filename),
-          contentType: "image/png",
-        },
-        user: req.user.id,
-      });
-      const savedimg = await saveImage.save().then((res) => {
-        console.log("image is saved");
-      });
+      const newImage = await ImageModel.create(body);
+      newImage.save();
+      res.status(201).json({ msg: "New image uploaded..." });
     } catch (error) {
-      console.error(error.message);
+      console.error("error got: ", error.message);
       res.status(500).send("Internal Server Error");
     }
-    res.send("image is saved");
   }
 );
 
 router.get("/getimg", fetchuser, async (req, res) => {
   try {
-    const allData = await ImageModel.find();
-    res.json(allData);
+    ImageModel.find({ user: req.user.id })
+      .sort({ _id: -1 })
+      .limit(1)
+      .then((data) => {
+        res.json(data);
+      })
+      .catch((error) => {
+        res.status(408).json(error);
+      });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal Server Error");
   }
 });
-
-router.put(
-  "/updateimg/:id",
-  upload.single("testImage"),
-  fetchuser,
-  async (req, res) => {
-    const { testImage } = req.body;
-    try {
-      const newImage = {};
-      if (testImage) {
-        newImage.testImage = testImage;
-      }
-      let newimg = await Image.findById(req.params.id);
-      if (!newimg) {
-        res.status(404).send("Not Found");
-      }
-      if (newimg.user.toString() !== req.user.id) {
-        return res.status(401).send("Not Allowed");
-      }
-
-      newimg = await Image.findByIdAndUpdate(
-        req.params.id,
-        { $set: newImage },
-        { new: true }
-      );
-      console.log("Image Updated");
-      res.json({ newimg });
-    } catch (error) {
-      console.log(error.message);
-      res.status(500).send("Internal Server Error");
-    }
-  }
-);
 
 module.exports = router;

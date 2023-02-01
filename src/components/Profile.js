@@ -4,12 +4,13 @@ import { useContext } from "react";
 import userContext from "../context/User/userContext";
 import { useState } from "react";
 import imgContext from "../context/ImageHandles/imgContext";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import axios from "axios";
 
-const Profile = () => {
-  //   let Navigate = useNavigate();
-
+const Profile = (props) => {
   const userdetails = useContext(userContext);
+  // user context
+
   const intervals = [
     { label: "year", seconds: 31536000 },
     { label: "month", seconds: 2592000 },
@@ -18,6 +19,7 @@ const Profile = () => {
     { label: "minute", seconds: 60 },
     { label: "second", seconds: 1 },
   ];
+  // for showing time registered
 
   function timeSince(date) {
     const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
@@ -25,43 +27,90 @@ const Profile = () => {
     const count = Math.floor(seconds / interval.seconds);
     return `${count} ${interval.label}${count !== 1 ? "s" : ""} ago`;
   }
+  // for showing time registered
+
   const timeDiff = (text) => {
     // const d1 = Date.now;
     const d2 = new Date(text);
     return timeSince(d2);
   };
+  // getting time difference
+
   const imagedetails = useContext(imgContext);
   const { origImage, getImage, setOrigImage, uploadImage } = imagedetails;
-  console.log("origImage in Profile ", origImage.data);
+  // image context
+  const ref = useRef(null);
+  const refClose = useRef(null);
+  // console.log("origImage in Profile ", origImage.data);
+  const [uploadedFile, setUploadedFile] = useState({ testImage: "" });
+  const [profilepicUrl, setProfilepicUrl] = useState({ testImage: "" });
+
+  const host = "http://localhost:5000";
+  const FinalPost = async (newImage) => {
+    try {
+      await axios.post(`${host}/api/image/upload`, newImage, {
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getImages = async () => {
+    try {
+      const temp = await axios.get(`${host}/api/image/getimg`, {
+        headers: {
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
+      localStorage.setItem("dp", temp.testImage);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
+    userdetails.getUserDetails();
     if (localStorage.getItem("token")) {
       // console.log(origImage);
       getImage();
+      console.log(localStorage.getItem("dp"), "ok");
     }
   }, []);
-  const [postImage, setPostImage] = useState([]);
 
-  const handleEditImage = async (event) => {
+  // using effect on page rendering
+  const submitUploadedFile = async (event) => {
     event.preventDefault();
-    uploadImage(postImage);
-    console.log(postImage);
-    // console.log(origImage);
+    // uploadImage(uploadedFile);
+    await FinalPost(uploadedFile);
+    console.log(uploadedFile);
+    setProfilepicUrl(uploadedFile);
+    props.showAlert("Profile Photo Changed Successfully!", "success");
   };
 
-  const EditImage = async (event) => {
-    event.preventDefault();
-  };
+  function convertToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  }
 
-  const handleFile = async (event) => {
+  const onChangeFile = async (event) => {
     event.preventDefault();
-    // console.log(event.target.files[0]);
-    // console.log("Edit Image");
     const file = event.target.files[0];
-    // const base64 = await convertToBase64(file);
-    // console.log(base64);
-    console.log("ok");
-    // setPostImage({ ...postImage, myFile: base64 });
-    console.log(postImage);
+    // console.log(file);
+    const base64f = await convertToBase64(file);
+    // console.log(base64f);
+    setUploadedFile({ ...uploadedFile, testImage: base64f });
+    ref.current.click();
   };
 
   const handleEditName = () => {};
@@ -96,19 +145,47 @@ const Profile = () => {
           height: "200px",
         }}
       >
-        {!localStorage.getItem("dp") ? (
-          <div>
-            <img
+        <div>
+          <img
+            style={{
+              borderRadius: "50%",
+              opacity: opacity,
+              cursor: "pointer",
+              width: "200px",
+              height: "200px",
+            }}
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+            src={
+              profilepicUrl.testImage ||
+              origImage.testImage ||
+              "https://t4.ftcdn.net/jpg/03/31/69/91/360_F_331699188_lRpvqxO5QRtwOM05gR50ImaaJgBx68vi.jpg"
+            }
+            // onClick={submitUploadedFile}
+            onMouseEnter={() => {
+              setHovered(true);
+              setOpacity(0.7);
+            }}
+            onMouseLeave={() => {
+              setHovered(false);
+              setOpacity(1);
+            }}
+            title="Change Profile Image"
+          />
+          {hovered && (
+            <i
               style={{
-                borderRadius: "50%",
-                opacity: opacity,
-                cursor: "pointer",
-                width: "200px",
+                fontSize: "20px",
+                color: "gray",
+                position: "absolute",
+                top: "35%",
+                left: "49.40%",
               }}
               data-bs-toggle="modal"
               data-bs-target="#exampleModal"
-              src="https://t4.ftcdn.net/jpg/03/31/69/91/360_F_331699188_lRpvqxO5QRtwOM05gR50ImaaJgBx68vi.jpg"
-              // onClick={handleEditImage}
+              className="fa-solid fa-square-pen"
+              // onClick={submitUploadedFile}
+              title="Change Profile Image"
               onMouseEnter={() => {
                 setHovered(true);
                 setOpacity(0.7);
@@ -117,48 +194,9 @@ const Profile = () => {
                 setHovered(false);
                 setOpacity(1);
               }}
-              title="Change Profile Image"
             />
-            {hovered && (
-              <i
-                style={{
-                  fontSize: "20px",
-                  color: "gray",
-                  position: "absolute",
-                  top: "35%",
-                  left: "49.40%",
-                }}
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                className="fa-solid fa-square-pen"
-                // onClick={handleEditImage}
-                title="Change Profile Image"
-                onMouseEnter={() => {
-                  setHovered(true);
-                  setOpacity(0.7);
-                }}
-                onMouseLeave={() => {
-                  setHovered(false);
-                  setOpacity(1);
-                }}
-              />
-            )}
-          </div>
-        ) : (
-          <div>
-            {/* {async () => {
-              setPostImage(
-                btoa(String.fromCharCode(...new Uint8Array(origImage)))
-              );
-            }} */}
-            <img
-              style={{ height: "210px", width: "210px", borderRadius: "50%" }}
-              src={`data:image/png; base64, ${_arrayBufferToBase64(
-                origImage.data
-              )}`}
-            />
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       <div
@@ -200,7 +238,11 @@ const Profile = () => {
       >
         <div className="modal-dialog">
           <div className="modal-content">
-            <form className="mx-1" onSubmit={handleEditImage}>
+            <form
+              className="mx-1"
+              onSubmit={submitUploadedFile}
+              encType="multipart/form-data"
+            >
               <div className="modal-header">
                 <h5 className="modal-title" id="exampleModalLabel">
                   Change Profile Photo
@@ -220,8 +262,9 @@ const Profile = () => {
                   className="form-control"
                   type="file"
                   id="file"
+                  filename="testImage"
                   required
-                  onChange={handleFile}
+                  onChange={onChangeFile}
                   accept=".jpeg, .jpg, .png"
                 />
               </div>
@@ -233,7 +276,12 @@ const Profile = () => {
                 >
                   Close
                 </button>
-                <button type="submit" className="btn btn-primary">
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                >
                   Change Profile Picture
                 </button>
               </div>
