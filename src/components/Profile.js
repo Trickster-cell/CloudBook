@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import userContext from "../context/User/userContext";
 import { useState } from "react";
@@ -37,10 +36,10 @@ const Profile = (props) => {
   // getting time difference
 
   const imagedetails = useContext(imgContext);
-  const { origImage, getImage, setOrigImage, uploadImage } = imagedetails;
+  const { origImage, getImage } = imagedetails;
+  console.log(getImage);
   // image context
   const ref = useRef(null);
-  const refClose = useRef(null);
   // console.log("origImage in Profile ", origImage.data);
   const [uploadedFile, setUploadedFile] = useState({ testImage: "" });
   const [profilepicUrl, setProfilepicUrl] = useState({ testImage: "" });
@@ -53,19 +52,6 @@ const Profile = (props) => {
           "auth-token": localStorage.getItem("token"),
         },
       });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getImages = async () => {
-    try {
-      const temp = await axios.get(`${host}/api/image/getimg`, {
-        headers: {
-          "auth-token": localStorage.getItem("token"),
-        },
-      });
-      localStorage.setItem("dp", temp.testImage);
     } catch (error) {
       console.log(error);
     }
@@ -118,21 +104,15 @@ const Profile = (props) => {
   const [hovered, setHovered] = useState(false);
   const [opacity, setOpacity] = useState(1);
 
-  function _arrayBufferToBase64(buffer) {
-    var binary = "";
-    var bytes = new Uint8Array(buffer);
-    var len = bytes.byteLength;
-    for (var i = 0; i < len; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-    return window.btoa(binary);
-  }
-
   return (
     <>
       <div
         className="container"
-        style={{ color: "white", justifyContent: "center", display: "flex" }}
+        style={{
+          justifyContent: "center",
+          display: "flex",
+          fontWeight: "bolder",
+        }}
       >
         <h1> Profile Page</h1>
       </div>
@@ -154,6 +134,7 @@ const Profile = (props) => {
               width: "200px",
               height: "200px",
             }}
+            alt=""
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
             src={
@@ -201,7 +182,7 @@ const Profile = (props) => {
 
       <div
         className="container"
-        style={{ color: "white", justifyContent: "center", display: "flex" }}
+        style={{ justifyContent: "center", display: "flex" }}
       >
         <h2 style={{ display: "inline" }} className="mx-2">
           {userdetails.state2.first_name} {userdetails.state2.last_name}
@@ -215,7 +196,7 @@ const Profile = (props) => {
       </div>
       <div
         className="container"
-        style={{ color: "white", justifyContent: "center", display: "flex" }}
+        style={{ justifyContent: "center", display: "flex" }}
       >
         <h3 style={{ display: "inline" }}>
           Email Address: {userdetails.state2.email}
@@ -223,7 +204,7 @@ const Profile = (props) => {
       </div>
       <div
         className="container"
-        style={{ color: "white", justifyContent: "center", display: "flex" }}
+        style={{ justifyContent: "center", display: "flex" }}
       >
         <h5 style={{ display: "inline" }}>
           Registered: {timeDiff(userdetails.state2.date)}

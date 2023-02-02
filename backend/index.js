@@ -17,5 +17,5 @@ app.use("/api/image", require("./routes/image"));
 
 
 app.listen(port, () => {
-  console.log(`iNoteBook backend listening on port ${port}`);
+  console.log(`CloudBook backend listening on port ${port}`);
 });

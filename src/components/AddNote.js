@@ -29,8 +29,6 @@ const AddNote = (props) => {
       <div
         className="container"
         style={{
-          WebkitTextStrokeWidth: "0.7px",
-          WebkitTextStrokeColor: "white",
           fontWeight: "bolder",
         }}
       >

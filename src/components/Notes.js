@@ -9,7 +9,9 @@ const Notes = (props) => {
   // const { showAlert } = props;
   const context = useContext(noteContext);
   let Navigate = useNavigate();
-  const { notes, getAllNotes, editNote } = context;
+  const { notes, editNote, getAllNotes } = context;
+  console.log(Navigate);
+  // console.log(getAllNotes);
   useEffect(() => {
     if (localStorage.getItem("token")) {
       getAllNotes();
@@ -158,8 +160,7 @@ const Notes = (props) => {
       <div className="row my-3">
         <div
           style={{
-            WebkitTextStrokeWidth: "1px",
-            WebkitTextStrokeColor: "white",
+            fontWeight: "bolder",
           }}
         >
           <h1>Your Notes</h1>

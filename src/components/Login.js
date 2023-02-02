@@ -48,19 +48,15 @@ const Login = (props) => {
       <div className="mb-3">
         <h1
           style={{
-            WebkitTextStrokeWidth: "0.5px",
-            WebkitTextStrokeColor: "white",
             fontWeight: "bolder",
           }}
         >
-          Login to iNoteBook
+          Login to CloudBook
         </h1>
         <label
           htmlFor="exampleInputEmail1"
           className="form-label"
           style={{
-            WebkitTextStrokeWidth: "0.5px",
-            WebkitTextStrokeColor: "white",
             fontWeight: "bolder",
           }}
         >
@@ -81,8 +77,6 @@ const Login = (props) => {
           htmlFor="exampleInputPassword1"
           className="form-label"
           style={{
-            WebkitTextStrokeWidth: "0.5px",
-            WebkitTextStrokeColor: "white",
             fontWeight: "bolder",
           }}
         >
@@ -100,11 +94,6 @@ const Login = (props) => {
       <button
         type="submit"
         className="btn btn-primary my-1"
-        style={{
-          WebkitTextStrokeWidth: "0.5px",
-          WebkitTextStrokeColor: "white",
-          fontWeight: "bolder",
-        }}
       >
         Login
       </button>
@@ -115,15 +104,11 @@ const Login = (props) => {
         color="blue"
         onClick={handleRegister}
         style={{
-          WebkitTextStrokeWidth: "0.5px",
-          WebkitTextStrokeColor: "white",
           fontWeight: "bolder",
         }}
       >
         <u
           style={{
-            WebkitTextStrokeWidth: "0.5px",
-            WebkitTextStrokeColor: "white",
             fontWeight: "bolder",
           }}
         >

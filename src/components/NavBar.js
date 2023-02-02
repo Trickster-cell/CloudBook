@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import userContext from "../context/User/userContext";
-
+import { useLocation } from "react-router-dom";
 
 const NavBar = (props) => {
   let Navigate = useNavigate();
@@ -19,8 +19,8 @@ const NavBar = (props) => {
   const handleProfile = (event) => {
     event.preventDefault();
     Navigate("/profile");
-  }
-
+  };
+  const location = useLocation();
 
   // const state = {context};
 
@@ -29,7 +29,7 @@ const NavBar = (props) => {
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
-          iNoteBook 
+          CloudBook
         </Link>
         <button
           className="navbar-toggler"
@@ -46,7 +46,9 @@ const NavBar = (props) => {
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link
-                className={'nav-link ${location.pathname==="/" ? "active":""}'}
+                className={`nav-link ${
+                  location.pathname === "/" ? "active" : ""
+                }`}
                 aria-current="page"
                 to="/"
               >
@@ -55,9 +57,9 @@ const NavBar = (props) => {
             </li>
             <li className="nav-item">
               <Link
-                className={
-                  'nav-link ${location.pathname==="/about" ? "active":""}'
-                }
+                className={`nav-link ${
+                  location.pathname === "/about" ? "active" : ""
+                }`}
                 to="/about"
               >
                 About
@@ -75,8 +77,14 @@ const NavBar = (props) => {
             </form>
           ) : (
             <div>
-              <i className="fa-solid fa-user mx-2" onClick={handleProfile} style={{ color: "white" }}></i>
-              <b className="mx-2" style={{ color: "white", fontSize:"20px" }}>Hello, {userdetails.state2.first_name}!</b>
+              <i
+                className="fa-solid fa-user mx-2"
+                onClick={handleProfile}
+                style={{ color: "white" }}
+              ></i>
+              <b className="mx-2" style={{ color: "white", fontSize: "20px" }}>
+                Hello, {userdetails.state2.first_name}!
+              </b>
               <button className="btn btn-primary mx-2" onClick={handleLogout}>
                 Logout
               </button>

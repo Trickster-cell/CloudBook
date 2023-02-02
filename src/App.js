@@ -8,7 +8,6 @@ import Signup from "./components/Signup";
 import Login from "./components/Login";
 import { useState } from "react";
 import UserState from "./context/User/UserState";
-import { useEffect } from "react";
 import Profile from "./components/Profile";
 import ImageState from "./context/ImageHandles/ImageState";
 function App() {
@@ -24,7 +23,7 @@ function App() {
   };
 
   const backgrounds = [
-    "https://exoplanets.nasa.gov/internal_resources/2069/",
+    "https://i.pinimg.com/originals/46/9e/2b/469e2b971cbfcc9403885a2d2faa192e.jpg",
     "https://img.freepik.com/free-photo/abstract-grunge-decorative-relief-navy-blue-stucco-wall-texture-wide-angle-rough-colored-background_1258-28311.jpg?w=2000",
     "https://png.pngtree.com/background/20210709/original/pngtree-parasol-parachute-rescue-equipment-color-background-picture-image_403082.jpg",
     "https://blog.depositphotos.com/wp-content/uploads/2017/07/Soothing-nature-backgrounds-2.jpg.webp",
@@ -42,7 +41,7 @@ function App() {
     "https://www.teahub.io/photos/full/177-1777872_sunset-clouds-dark-ocean-wallpapers-dark-desktop-backgrounds.jpg",
   ];
 
-  const [ind, setInd] = useState(0);
+  // const [ind, setInd] = useState(0);
   // useEffect(() => {
   //   setTimeout(() => {
   //     setInd((ind + Math.floor(Math.random() * 100)) % backgrounds.length);
@@ -50,13 +49,14 @@ function App() {
   // });
 
   const myStyle = {
-    backgroundImage: "url('" + backgrounds[ind] + "')",
+    backgroundImage: "url('" + backgrounds[0] + "')",
     height: "100%",
     // margin: "0",
     paddingBottom: "500px",
     backgroundAttachment: "fixed",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
+    fontFamily: 'Cantata One',
   };
 
   return (

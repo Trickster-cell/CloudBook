@@ -21,7 +21,7 @@ const Signup = (props) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const { first_name, last_name, email, password } = credentials;
+    // const { first_name, last_name, email, password } = credentials;
     const response = await fetch("http://localhost:5000/api/auth/createuser", {
       method: "POST",
       headers: {
@@ -50,14 +50,12 @@ const Signup = (props) => {
     <div
       className="container"
       style={{
-        WebkitTextStrokeWidth: "0.5px",
-        WebkitTextStrokeColor: "white",
         fontWeight: "bolder",
       }}
     >
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <h1>Signup to iNoteBook</h1>
+          <h1>Signup to CloudBook</h1>
           <label htmlFor="first_name" className="form-label">
             First Name
           </label>
