@@ -1,15 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/User");
-const { body, validationResult } = require("express-validator");
-const bcrypt = require("bcryptjs");
-var jwt = require("jsonwebtoken");
 const fetchuser = require("../middleware/fetchuser");
-const Image = require("../models/Image");
 const multer = require("multer");
-const fs = require("fs");
 const ImageModel = require("../models/Image");
-const bodyParser = require("body-parser");
 router.use(express.json({ limit: "10mb", extended: true }));
 router.use(
   express.urlencoded({ limit: "10mb", extended: true, parameterLimit: 50000 })

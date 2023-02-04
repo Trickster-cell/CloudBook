@@ -55,7 +55,13 @@ const Signup = (props) => {
     >
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <h1>Signup to CloudBook</h1>
+          <h1
+            style={{
+              fontWeight: "bolder",
+            }}
+          >
+            Signup to CloudBook
+          </h1>
           <label htmlFor="first_name" className="form-label">
             First Name
           </label>

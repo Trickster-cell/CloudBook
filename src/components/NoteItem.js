@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useContext } from "react";
 import noteContext from "../context/Notes/noteContext";
 import DeleteModal from "./modal";
-import modal from "./modal";
 
 
 const NoteItem = (props) => {

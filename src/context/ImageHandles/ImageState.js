@@ -1,6 +1,5 @@
 import imgContext from "./imgContext";
 import { useState } from "react";
-import axios from "axios";
 
 const ImageState = (props) => {
   const host = "http://localhost:5000";

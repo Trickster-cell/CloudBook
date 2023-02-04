@@ -5,15 +5,16 @@ const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
 var fetchuser = require("../middleware/fetchuser");
-const bodyParser = require("body-parser");
-router.use(express.json({limit: "10mb", extended: true}))
-router.use(express.urlencoded({limit: "10mb", extended: true, parameterLimit: 50000}))
+router.use(express.json({ limit: "10mb", extended: true }));
+router.use(
+  express.urlencoded({ limit: "10mb", extended: true, parameterLimit: 50000 })
+);
 
 // Create a User
 
 const JWT_SECRET = "SabMohMayaHai";
-// Route 1
 
+// Route 1(Create a User)
 router.post(
   "/createUser",
   [
@@ -118,6 +119,39 @@ router.post("/getuser", fetchuser, async (req, res) => {
     userId = req.user.id;
     const user = await User.findById(userId).select("-password");
     res.send(user);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.put("/edituserName/:id", fetchuser, async (req, res) => {
+  const { first_name, last_name, date } = req.body;
+  // const salt = await bcrypt.genSalt(10);
+  // const secPass = await bcrypt.hash(password, salt);
+  try {
+    const newUser = {};
+    if (first_name) {
+      newUser.first_name = first_name;
+    }
+    if (last_name) {
+      newUser.last_name = last_name;
+    }
+    // if (password) {
+    //   newUser.password = secPass;
+    // }
+    let tempuser = await User.findById(req.params.id);
+    if (!tempuser) {
+      res.status(404).send("Not Found");
+    }
+
+    tempuser = await User.findByIdAndUpdate(
+      req.params.id,
+      { $set: newUser },
+      { new: true }
+    );
+
+    res.json({ tempuser });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal Server Error");

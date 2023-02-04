@@ -12,8 +12,7 @@ const NoteState = (props) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          localStorage.getItem('token'),
+        "auth-token": localStorage.getItem("token"),
       },
     });
     const json = await response.json();
@@ -27,8 +26,7 @@ const NoteState = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          localStorage.getItem('token'),
+        "auth-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({ title, description, tag }),
     });
@@ -43,8 +41,7 @@ const NoteState = (props) => {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          localStorage.getItem('token'),
+        "auth-token": localStorage.getItem("token"),
       },
     });
     const json = await response.json();
@@ -60,11 +57,11 @@ const NoteState = (props) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          localStorage.getItem('token'),
+        "auth-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({ title, description, tag }),
     });
+    console.log(response);
 
     let tempNotes = JSON.parse(JSON.stringify(notes));
     for (let index = 0; index < notes.length; index++) {
@@ -76,8 +73,7 @@ const NoteState = (props) => {
         break;
       }
     }
-    const json = response.json();
-    setNotes(tempNotes)
+    setNotes(tempNotes);
   };
   // console.log("Edit");
 

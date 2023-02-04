@@ -5,6 +5,7 @@ import { useContext } from "react";
 import userContext from "../context/User/userContext";
 import { useLocation } from "react-router-dom";
 
+
 const NavBar = (props) => {
   let Navigate = useNavigate();
   const userdetails = useContext(userContext);
@@ -28,7 +29,8 @@ const NavBar = (props) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/">
+        <img src="./logo_full_dark.png" className="mx-1" alt="" style={{width:"55px"}}/>
+        <Link className="navbar-brand" to="/about">
           CloudBook
         </Link>
         <button

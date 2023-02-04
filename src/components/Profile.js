@@ -5,6 +5,7 @@ import { useState } from "react";
 import imgContext from "../context/ImageHandles/imgContext";
 import { useEffect, useRef } from "react";
 import axios from "axios";
+import $ from 'jquery';
 
 const Profile = (props) => {
   const userdetails = useContext(userContext);
@@ -36,10 +37,11 @@ const Profile = (props) => {
   // getting time difference
 
   const imagedetails = useContext(imgContext);
-  const { origImage, getImage } = imagedetails;
-  console.log(getImage);
+  const { origImage, getImage, setOrigImage } = imagedetails;
+  // console.log(getImage);
   // image context
-  const ref = useRef(null);
+  // const ref = useRef(null);
+  // const refClose = useRef(null);
   // console.log("origImage in Profile ", origImage.data);
   const [uploadedFile, setUploadedFile] = useState({ testImage: "" });
   const [profilepicUrl, setProfilepicUrl] = useState({ testImage: "" });
@@ -62,7 +64,7 @@ const Profile = (props) => {
     if (localStorage.getItem("token")) {
       // console.log(origImage);
       getImage();
-      console.log(localStorage.getItem("dp"), "ok");
+      // console.log(localStorage.getItem("dp"), "ok");
     }
   }, []);
 
@@ -73,6 +75,10 @@ const Profile = (props) => {
     await FinalPost(uploadedFile);
     console.log(uploadedFile);
     setProfilepicUrl(uploadedFile);
+    setOrigImage({
+      ...origImage,
+      [origImage.testImage]: uploadedFile.testImage,
+    });
     props.showAlert("Profile Photo Changed Successfully!", "success");
   };
 
@@ -96,10 +102,28 @@ const Profile = (props) => {
     const base64f = await convertToBase64(file);
     // console.log(base64f);
     setUploadedFile({ ...uploadedFile, testImage: base64f });
-    ref.current.click();
   };
 
-  const handleEditName = () => {};
+  const [editName, setEditName] = useState({
+    first_name: localStorage.getItem("first_name"),
+    last_name: localStorage.getItem("last_name"),
+  });
+
+  const handleENamechange = (event) => {
+    setEditName({ ...editName, [event.target.name]: event.target.value });
+  };
+
+  const submitNameChange = async (event) => {
+    event.preventDefault();
+    // console.log(editName);
+    $('#EditName').modal('hide');
+    userdetails.editUserdetails(
+      localStorage.getItem("userid"),
+      editName.first_name,
+      editName.last_name
+    );
+    props.showAlert("Name Changed Successfully!", "success");
+  };
 
   const [hovered, setHovered] = useState(false);
   const [opacity, setOpacity] = useState(1);
@@ -189,7 +213,8 @@ const Profile = (props) => {
           <i
             style={{ fontSize: "20px", color: "gray" }}
             className="fa-solid fa-square-pen"
-            onClick={handleEditName}
+            data-bs-toggle="modal"
+            data-bs-target="#EditName"
             title="Edit Name"
           />
         </h2>
@@ -210,6 +235,7 @@ const Profile = (props) => {
           Registered: {timeDiff(userdetails.state2.date)}
         </h5>
       </div>
+      {/* Modal for Profile Pic Change */}
       <div
         className="modal fade"
         id="exampleModal"
@@ -264,6 +290,78 @@ const Profile = (props) => {
                   data-bs-target="#exampleModal"
                 >
                   Change Profile Picture
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      {/* Modal for Name Change */}
+      <div
+        className="modal fade"
+        id="EditName"
+        tabIndex="-1"
+        aria-labelledby="EditName2Label"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <form
+              className="mx-1"
+              onSubmit={submitNameChange}
+              encType="multipart/form-data"
+            >
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">
+                  Change Your Name
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div className="mb-3">
+                <div className="mb-3">
+                  <label for="editfname" className="form-label">
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="editfname"
+                    minLength={3}
+                    required
+                    name="first_name"
+                    value={editName.first_name}
+                    onChange={handleENamechange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label for="editlname" className="form-label">
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="editlname"
+                    name="last_name"
+                    value={editName.last_name}
+                    onChange={handleENamechange}
+                  />
+                </div>
+              </div>
+              <div className="modal-footer mx-1">
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Change Name
                 </button>
               </div>
             </form>
